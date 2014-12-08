@@ -1,0 +1,25 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+@{ var home = CurrentPage.AncestorOrSelf(1); }	
+
+	<!-- Header -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+					@if(home.HasValue("image"))
+					{
+						<img class="img-responsive" src="@Umbraco.Media(home.image).Url" alt="@Umbraco.Media(home.image).Name">
+					}
+                    <div class="intro-text">
+						<span class="name">@((home.HasValue("header"))? home.header : home.Name)</span>
+						<hr class="star-light">                       
+                        @if(home.HasValue("description"))
+						{
+							<span class="skills">@Html.Raw(umbraco.library.ReplaceLineBreaks(home.description))</span>
+						}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>

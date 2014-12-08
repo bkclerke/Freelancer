@@ -1,0 +1,63 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+	@{
+		var folio = CurrentPage.AncestorOrSelf(1).Folio.First();
+		var items = folio.FolioItem;
+	}
+
+@if(items.Count() > 0)
+{
+	<!-- Portfolio Modals -->
+	foreach(var item in items)
+	{
+		<div class="portfolio-modal modal fade" id="portfolioModal@{@item.Position()}" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-content">
+				<div class="close-modal" data-dismiss="modal">
+					<div class="lr">
+						<div class="rl">
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 col-lg-offset-2">
+							<div class="modal-body">
+								<h2>@((item.HasValue("header")? item.header : item.Name))</h2>
+								<hr class="star-primary">
+								@if(item.HasValue("image"))
+								{
+									<img src="@Umbraco.Media(item.image).Url" class="img-responsive img-centered" alt="@Umbraco.Media(item.image).Name">
+								}
+								@item.bodyText
+								<ul class="list-inline item-details">
+									@if(item.HasValue("client"))
+									{
+										<li>Client:
+											<strong>@item.client
+											</strong>
+										</li>
+									}
+									@if(item.HasValue("date"))
+									{
+										<li>Date:
+										<strong>@String.Format("{0: MMM dd, yyyy}", item.date)
+											</strong>
+										</li>
+									}
+									@if(item.HasValue("services"))
+									{
+										<li>Service:
+											<strong>@item.services
+											</strong>
+										</li>
+									}
+								</ul>
+								<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

@@ -1,0 +1,42 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+	@{
+		var folio = CurrentPage.AncestorOrSelf(1).Folio.First();
+		var items = folio.FolioItem;
+	}
+	
+@if(CurrentPage.AncestorOrSelf(1).Folio.Count() > 0)
+{
+	<!-- Portfolio Grid Section -->
+    <section id="@folio.Name.ToLower().Replace(" ", "_")">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>@((folio.HasValue("header")? folio.header : folio.Name))</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+			@if(items.Count() > 0)
+			{
+				<div class="row">
+					@foreach(var item in items)
+					{
+						<div class="col-sm-4 portfolio-item">
+							<a href="#portfolioModal@{@item.Position()}" class="portfolio-link" data-toggle="modal">
+								<div class="caption">
+									<div class="caption-content">
+										<i class="fa fa-search-plus fa-3x"></i>
+									</div>
+								</div>
+								@if(item.HasValue("image"))
+								{
+									<img src="@Umbraco.Media(item.image).Url" class="img-responsive" alt="@Umbraco.Media(item.image).Name">
+								}
+							</a>
+						</div>
+					}
+				</div>
+			}
+        </div>
+    </section>
+}
